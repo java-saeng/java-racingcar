@@ -2,9 +2,13 @@ package engine;
 
 import domain.Car;
 import domain.Cars;
+import domain.MoveState;
 import domain.Name;
+import domain.RandomMoveState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.NumberGenerator;
 import utils.NumberMovableGenerator;
 import utils.NumberNonMovableGenerator;
 
@@ -18,7 +22,9 @@ class CarEngineTest {
     @DisplayName("moveCar() : 값이 3일 경우에는 자동차는 움직이지 않는다.")
     void test_notMoveCar() throws Exception {
         //given
-        CarEngine carEngine = new CarEngine(new NumberNonMovableGenerator());
+        NumberGenerator numberGenerator = new NumberNonMovableGenerator();
+        MoveState moveState = new RandomMoveState(numberGenerator);
+        CarEngine carEngine = new CarEngine(numberGenerator, moveState);
 
         Cars cars = new Cars(List.of(new Car(Name.fromName("a"))));
 
@@ -34,7 +40,9 @@ class CarEngineTest {
     @DisplayName("moveCar() : 값이 4일 경우에는 자동차는 움직인다.")
     void test_moveCar() throws Exception {
         //given
-        CarEngine carEngine = new CarEngine(new NumberMovableGenerator());
+        NumberGenerator numberGenerator = new NumberMovableGenerator();
+        MoveState moveState = new RandomMoveState(numberGenerator);
+        CarEngine carEngine = new CarEngine(numberGenerator, moveState);
 
         Cars cars = new Cars(List.of(new Car(Name.fromName("a"))));
 

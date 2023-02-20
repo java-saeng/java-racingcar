@@ -11,16 +11,19 @@ import static org.assertj.core.api.Assertions.entry;
 
 class CarsTest {
 
+    private static final int MOVE = 1;
+    private static final int STOP = 0;
+
     @Test
     @DisplayName("getWinner() : 가장 많이 움직인 자동차를 반환해준다.")
     void test_getWinner() {
         // given
         final Car pobi = createCar("pobi");
-        pobi.move();
-        pobi.move();
+        pobi.move(() -> MOVE);
+        pobi.move(() -> MOVE);
 
         final Car crong = createCar("crong");
-        crong.move();
+        crong.move(() -> MOVE);
 
         Cars cars = new Cars(List.of(pobi, crong));
 
@@ -41,11 +44,11 @@ class CarsTest {
     void test_getCurrentStatus() {
         // given
         final Car pobi = createCar("pobi");
-        pobi.move();
-        pobi.move();
+        pobi.move(() -> MOVE);
+        pobi.move(() -> MOVE);
 
         final Car crong = createCar("crong");
-        crong.move();
+        crong.move(() -> MOVE);
 
         Cars cars = new Cars(List.of(pobi, crong));
 

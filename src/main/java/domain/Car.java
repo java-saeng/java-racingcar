@@ -12,8 +12,8 @@ public class Car {
         this.distance = DEFAULT_DISTANCE_VALUE;
     }
 
-    public void move() {
-        distance++;
+    public void move(MoveState moveState) {
+        distance += moveState.move();
     }
 
     public int getDistance() {

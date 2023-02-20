@@ -4,7 +4,10 @@ import console.InputView;
 import console.OutputView;
 import domain.Car;
 import domain.Cars;
+import domain.MoveState;
 import domain.Name;
+import domain.RandomMoveState;
+import utils.NumberGenerator;
 import utils.RandomNumberGenerator;
 
 import java.util.Arrays;
@@ -49,7 +52,9 @@ public class RacingGameEngine {
 
     private void startRace(Cars cars, int tryCount) {
 
-        CarEngine carEngine = new CarEngine(new RandomNumberGenerator());
+        NumberGenerator numberGenerator = new RandomNumberGenerator();
+        MoveState moveState = new RandomMoveState(numberGenerator);
+        CarEngine carEngine = new CarEngine(numberGenerator, moveState);
 
         OutputView.printResultMessage();
 
