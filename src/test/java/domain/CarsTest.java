@@ -3,11 +3,16 @@ package domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CarsTest {
 
@@ -58,5 +63,61 @@ class CarsTest {
         // then
         assertThat(carCurrentStatus).hasSize(2)
                                     .contains(entry("pobi", 2), entry("crong", 1));
+    }
+
+    @Test
+    void test_mutable() throws Exception {
+        //given
+        List<Car> carList = new ArrayList<>();
+
+        carList.add(new Car(Name.fromName("aa")));
+        carList.add(new Car(Name.fromName("bb")));
+
+        Cars cars = new Cars(carList);
+
+        List<Car> mutableCars = cars.getCars();
+        int beforeCarsSize = mutableCars.size();
+
+        //when
+        carList.remove(0);
+
+        int afterCarsSize = mutableCars.size();
+
+        //then
+        assertAll(
+                () -> assertNotEquals(beforeCarsSize, afterCarsSize),
+                () -> assertThat(beforeCarsSize).isEqualTo(2),
+                () -> assertThat(afterCarsSize).isEqualTo(1),
+                () -> assertThatThrownBy(() -> mutableCars.remove(0))
+                        .isInstanceOf(UnsupportedOperationException.class)
+        );
+    }
+
+    @Test
+    void test_immutable() throws Exception {
+        //given
+        List<Car> carList = new ArrayList<>();
+
+        carList.add(new Car(Name.fromName("aa")));
+        carList.add(new Car(Name.fromName("bb")));
+
+        Cars cars = new Cars(carList);
+
+        List<Car> immutableCars = cars.getCarsImmutable();
+        int beforeCarsSize = immutableCars.size();
+
+        //when
+        carList.remove(0);
+
+        int afterCarsSize = immutableCars.size();
+
+        //then
+        assertAll(
+                () -> assertEquals(beforeCarsSize, afterCarsSize),
+                () -> assertThat(beforeCarsSize).isEqualTo(2),
+                () -> assertThat(afterCarsSize).isEqualTo(2),
+                () -> assertThatThrownBy(() -> immutableCars.remove(0))
+                        .isInstanceOf(UnsupportedOperationException.class)
+        );
     }
 }

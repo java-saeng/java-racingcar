@@ -53,4 +53,8 @@ public class Cars {
     public List<Car> getCars() {
         return Collections.unmodifiableList(cars);
     }
+
+    public List<Car> getCarsImmutable() {
+        return List.copyOf(cars);
+    }
 }
